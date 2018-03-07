@@ -1,6 +1,13 @@
 <template>
   <v-app>
-    <v-toolbar app color="cyan"></v-toolbar>
+    <v-toolbar app flat dark color="cyan">
+      <v-toolbar-title><v-btn flat @click="navigateTo('/')">Forum-App</v-btn></v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat @click="navigateTo('register')">Register</v-btn>
+        <v-btn flat @click="navigateTo('login')">Login</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
     <v-content>
       <v-container fluid>
         <router-view></router-view>
@@ -11,7 +18,11 @@
 
 <script>
 export default {
-  name: 'App'
+  methods: {
+    navigateTo(name) {
+      this.$router.push(name);
+    }
+  }
 }
 </script>
 

@@ -3,7 +3,7 @@
 		<div class="white elevation-2">
 			<v-toolbar flat dark color="cyan">
 				<v-toolbar-title>
-					Register
+					Login
 				</v-toolbar-title>
 			</v-toolbar>
 			<v-flex class="pl-4 pr-4 pt-4 pb-4">
@@ -17,7 +17,7 @@
 			          v-model="user.password"
 			          type="password"
 			    ></v-text-field>
-			    <v-btn color="cyan" dark @click="register">Register</v-btn>
+			    <v-btn color="cyan" dark @click="login">Login</v-btn>
 			</v-flex>
 			<v-alert color="error" :value="isError">
 		      <li class="text-sm-left" v-for="error in errors" :key="error.msg">{{ error.msg }}</li class="text-left">
@@ -46,10 +46,10 @@ export default {
 		}
 	},
 	methods: {
-		register() {
+		login() {
 			var data = this
 			data.isSubmitted = true
-			AuthServices.register(this.user, function(response) {
+			AuthServices.login(this.user, function(response) {
 				if(response.data.errors) {
 					data.errors = response.data.errors
 					data.isError = true
@@ -57,7 +57,7 @@ export default {
 					data.user.password = null
 				}
 				else {
-					data.success = "User registered successfully with id: " + response.data.email
+					data.success = "User logged in successfully with id: " + response.data.email
 					data.isError = false
 					data.user.email = null
 					data.user.password = null

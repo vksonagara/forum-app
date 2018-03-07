@@ -27,4 +27,23 @@ UserSchema.pre('save', function(next) {
 	});
 });
 
+// UserSchema.statics.authenticate = function(user, callback) {
+// 	User.find({email: user.email})
+// 	.then(function(response) {
+// 		if(response) {
+// 			bcrypt.compare(user.password, response.password, function(err, flag) {
+// 				if(flag) {
+// 					callback(null, flag);
+// 				}
+// 				else {
+// 					callback({msg: "Invalid Email/Password"});
+// 				}
+// 			})
+// 		}
+// 		else {
+// 			callback({msg: "Invalid Email/Password"});
+// 		}
+// 	});
+// }
+
 module.exports = User;
