@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const AuthController = {
 	register: (req, res, next) => {
@@ -25,7 +26,7 @@ const AuthController = {
 		}
 		
 	},
-	login: (req, res, next) => {
+	login: async (req, res, next) => {
 		req.check('email', 'Email must be valid.').isEmail();
 		req.check('password', 'Password must not be empty.').notEmpty();
 		var errors = req.validationErrors();
@@ -35,29 +36,39 @@ const AuthController = {
 		else {
 			var email = req.body.email;
 			var password = req.body.password;
-			User.findOne({email: email})
-			.then(function(response) {
-				if(response) {
-					console.log(response);
-					bcrypt.compare(password, response.password)
-					.then(function(flag) {
-						if(flag) {
-							res.send({email: email});
-						}
-						else next([{msg: 'Invalid Email/Password'}]);
-					})
-					.catch(function(err) {
-						console.log(err);
+			try {
+				var user = await User.findOne({email: email});
+				if(user) {
+					var flag = await bcrypt.compare(password, user.password);
+					if(flag) {
+						const expireTime = Math.floor(Date.now()/1000) + 10;
+						var token = jwt.sign({
+							exp: expireTime,
+							data: user.email
+						}, 'secret');
+						res.send({token: token});
+					}
+					else {
 						next([{msg: 'Invalid Email/Password'}]);
-					});
+					}
 				}
 				else {
 					next([{msg: 'Invalid Email/Password'}]);
-				}
-			})
-			.catch(function(err) {
+				}	
+			}
+			catch(err) {
 				next([{msg: 'Invalid Email/Password'}]);
-			})
+			} 
+			
+		}
+	},
+	test: (req, res, next) => {
+		try {
+			var decoded = jwt.verify(req.body.token, 'secret');
+			res.send({user: decoded});
+		}
+		catch(err) {
+			next([{msg: 'Invalid token'}]);
 		}
 	}
 };
