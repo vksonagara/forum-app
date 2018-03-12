@@ -21,10 +21,9 @@ const AuthController = {
 				if(err) {
 					next([{msg: 'Email already exists!'}]);
 				}
-				else res.send(user);
+				else res.send({msg: 'Registered User Successfully!'});
 			});
-		}
-		
+		}	
 	},
 	login: async (req, res, next) => {
 		req.check('email', 'Email must be valid.').isEmail();
@@ -41,10 +40,13 @@ const AuthController = {
 				if(user) {
 					var flag = await bcrypt.compare(password, user.password);
 					if(flag) {
-						const expireTime = Math.floor(Date.now()/1000) + 10;
+						const expireTime = Math.floor(Date.now()/1000) + 7*24*60*60;
 						var token = jwt.sign({
 							exp: expireTime,
-							data: user.email
+							user: {
+								id: user._id,
+								email: user.email
+							}
 						}, 'secret');
 						res.send({token: token});
 					}
@@ -63,13 +65,7 @@ const AuthController = {
 		}
 	},
 	test: (req, res, next) => {
-		try {
-			var decoded = jwt.verify(req.body.token, 'secret');
-			res.send({user: decoded});
-		}
-		catch(err) {
-			next([{msg: 'Invalid token'}]);
-		}
+		res.send(req.user);
 	}
 };
 
