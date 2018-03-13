@@ -26,20 +26,6 @@ const UserSchema = new Schema({
 	}]
 });
 
-const User = mongoose.model('users', UserSchema);
+const Forum = mongoose.model('forums', ForumSchema);
 
-UserSchema.pre('save', function(next) {
-	var user = this;
-	bcrypt.hash(user.password, 10, function(err, hash) {
-		if(err) {
-			return next(err);
-		}
-		else {
-			user.password = hash;
-			console.log(this.password);
-			next();
-		}
-	});
-});
-
-module.exports = User;
+module.exports = Forum;

@@ -61,7 +61,6 @@ const AuthController = {
 			catch(err) {
 				next([{msg: 'Invalid Email/Password'}]);
 			} 
-			
 		}
 	},
 	test: (req, res, next) => {
