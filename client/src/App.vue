@@ -4,8 +4,9 @@
       <v-toolbar-title><v-btn flat @click="navigateTo('/')">Forum-App</v-btn></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat @click="navigateTo('register')">Register</v-btn>
-        <v-btn flat @click="navigateTo('login')">Login</v-btn>
+        <v-btn flat @click="navigateTo('register')" v-if="!isLoggedIn">Register</v-btn>
+        <v-btn flat @click="navigateTo('login')" v-if="!isLoggedIn">Login</v-btn>
+        <v-btn flat @click="logout" v-if="isLoggedIn">Logout</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
@@ -20,7 +21,16 @@
 export default {
   methods: {
     navigateTo(name) {
-      this.$router.push(name);
+      this.$router.push(name)
+    },
+    logout() {
+      this.$store.commit('logUser')
+      this.$store.commit('unsetToken')
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn
     }
   }
 }

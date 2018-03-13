@@ -20,10 +20,10 @@
 			    <v-btn color="cyan" dark @click="register">Register</v-btn>
 			</v-flex>
 			<v-alert color="error" :value="isError">
-		      <li class="text-sm-left" v-for="error in errors" :key="error.msg">{{ error.msg }}</li class="text-left">
+		      {{ error }}
 		    </v-alert>
 		    <v-alert color="success" :value="isSubmitted && !isError">
-		      <p>{{ success }}</p>
+		      <p>{{ success }} - Now Login</p>
 		    </v-alert>
 		</div>
 	</v-flex>
@@ -39,30 +39,40 @@ export default {
 				email: null,
 				password: null
 			},
-			errors: null,
+			error: null,
 			isError: false,
 			success: null,
-			isSubmitted: false
+			isSubmitted: false,
 		}
 	},
 	methods: {
 		register() {
-			var data = this
-			data.isSubmitted = true
-			AuthServices.register(this.user, function(response) {
-				if(response.data.errors) {
-					data.errors = response.data.errors
-					data.isError = true
-					data.user.email = null
-					data.user.password = null
+			var vm = this
+			vm.isSubmitted = true
+			AuthServices.register(this.user, function(err, res) {
+				if(err) {
+					vm.error = "Bad request!"
+					vm.isError = true
+					vm.user.email = null
+					vm.user.password = null
 				}
 				else {
-					data.success = "User registered successfully with id: " + response.data.email
-					data.isError = false
-					data.user.email = null
-					data.user.password = null
+					vm.success = 'Registered Successfully!'
+					vm.isError = false
+					vm.user.email = null
+					vm.user.password = null
 				}
 			})	
+		}
+	},
+	computed: {
+		count() {
+			return this.$store.state.count;
+		}
+	},
+	created() {
+		if(this.$store.state.isLoggedIn) {
+			this.$router.push('/')
 		}
 	}
 }

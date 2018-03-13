@@ -20,10 +20,7 @@
 			    <v-btn color="cyan" dark @click="login">Login</v-btn>
 			</v-flex>
 			<v-alert color="error" :value="isError">
-		      <li class="text-sm-left" v-for="error in errors" :key="error.msg">{{ error.msg }}</li class="text-left">
-		    </v-alert>
-		    <v-alert color="success" :value="isSubmitted && !isError">
-		      <p>{{ success }}</p>
+		      {{ error }}
 		    </v-alert>
 		</div>
 	</v-flex>
@@ -39,30 +36,38 @@ export default {
 				email: null,
 				password: null
 			},
-			errors: null,
+			error: null,
 			isError: false,
-			success: null,
 			isSubmitted: false
 		}
 	},
 	methods: {
 		login() {
-			var data = this
-			data.isSubmitted = true
-			AuthServices.login(this.user, function(response) {
-				if(response.data.errors) {
-					data.errors = response.data.errors
-					data.isError = true
-					data.user.email = null
-					data.user.password = null
+			var vm = this
+			vm.isSubmitted = true
+			AuthServices.login(this.user, function(err, res) {
+				if(err) {
+					vm.error = 'Incorrect credentials!'
+					vm.isError = true
+					vm.user.email = null
+					vm.user.password = null
 				}
 				else {
-					data.success = "User logged in successfully with id: " + response.data.email
-					data.isError = false
-					data.user.email = null
-					data.user.password = null
+					vm.$store.commit('setToken', res.data.token)
+					vm.$store.commit('logUser')
+					vm.$router.push('/')
 				}
 			})	
+		}
+	},
+	computed: {
+		token() {
+			return this.$store.state.token;
+		}
+	},
+	created() {
+		if(this.$store.state.isLoggedIn) {
+			this.$router.push('/')
 		}
 	}
 }
