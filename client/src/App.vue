@@ -20,16 +20,17 @@
 <script>
 export default {
   methods: {
-    navigateTo(name) {
+    navigateTo (name) {
       this.$router.push(name)
     },
-    logout() {
+    logout () {
       this.$store.commit('logUser')
       this.$store.commit('unsetToken')
+      this.$router.push('/')
     }
   },
   computed: {
-    isLoggedIn() {
+    isLoggedIn () {
       return this.$store.state.isLoggedIn
     }
   }

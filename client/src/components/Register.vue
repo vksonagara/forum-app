@@ -33,7 +33,7 @@
 import AuthServices from '@/services/AuthServices'
 
 export default {
-	data() {
+	data () {
 		return {
 			user: {
 				email: null,
@@ -46,7 +46,7 @@ export default {
 		}
 	},
 	methods: {
-		register() {
+		register () {
 			var vm = this
 			vm.isSubmitted = true
 			AuthServices.register(this.user, function(err, res) {
@@ -66,11 +66,11 @@ export default {
 		}
 	},
 	computed: {
-		count() {
+		count () {
 			return this.$store.state.count;
 		}
 	},
-	created() {
+	created () {
 		if(this.$store.state.isLoggedIn) {
 			this.$router.push('/')
 		}
@@ -79,5 +79,4 @@ export default {
 </script>
 
 <style scoped>
-	
 </style>

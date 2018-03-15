@@ -11,10 +11,12 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   store,
   components: { App },
   template: '<App/>'
 })
+
+export default app
