@@ -38,5 +38,35 @@ export default {
 		.catch(function(err) {
 			callback(err)
 		})
+	},
+	getEmail(callback) {
+		axios({
+			method: 'get',
+			url: 'http://localhost:8081/email',
+			headers: {
+				'Authorization': 'Bearer ' + app.$store.state.token
+			}
+		})
+		.then(function(response) {
+			callback(null, response)
+		})
+		.catch(function(err) {
+			callback(err)
+		})
+	},
+	getMe(callback) {
+		axios({
+			method: 'get',
+			url: 'http://localhost:8081/me/forums',
+			headers: {
+				'Authorization': 'Bearer ' + app.$store.state.token
+			}
+		})
+		.then(function(response) {
+			callback(null, response)
+		})
+		.catch(function(err) {
+			callback(err)
+		})
 	}
 }

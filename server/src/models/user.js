@@ -42,4 +42,8 @@ UserSchema.pre('save', function(next) {
 	});
 });
 
+UserSchema.pre('update', function(next) {
+	next();
+});
+
 module.exports = User;

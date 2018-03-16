@@ -45,7 +45,7 @@ app.use((err, req, res, next) => {
 	next();
 });
 
-mongoose.connect('mongodb://localhost:27017/forum-app', function(err) {
+mongoose.connect('mongodb://forum-app:forum-app@ds157818.mlab.com:57818/forum-app', function(err) {
 	if(err) console.log(err);
 	console.log('Connected to Database');
 	app.listen(process.env.PORT || 8081, function() {

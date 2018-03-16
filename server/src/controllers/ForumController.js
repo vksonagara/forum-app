@@ -21,6 +21,8 @@ const ForumController = {
 				updated_at : Date.now(),
 				user: user._id
 			});
+			user.forums.push(forum._id);
+			user.save();
 			forum.save();
 			res.send('Forum Created!');
 		}
@@ -61,6 +63,24 @@ const ForumController = {
 		}
 		catch(err) {
 			next([{msg: 'Can not delete forum!'}]);
+		}
+	},
+	getMe: async (req, res, next) => {
+		try {
+			var user = await User.findOne({_id: req.user.id}).populate('forums');
+			res.send(user.forums);
+		}
+		catch(err) {
+			next([{msg: 'Can not find forum!'}]);
+		}
+	},
+	getEmail: async(req, res, next) => {
+		try {
+			var user = await User.findOne({_id: req.user.id});
+			res.send(user.email);
+		}
+		catch(err) {
+			next(err);
 		}
 	}
 };
