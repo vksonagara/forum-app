@@ -3,7 +3,7 @@
     <div class="white elevation-2">
       <v-toolbar flat dark color="cyan">
         <v-toolbar-title>
-          Create Forum
+          Update Forum
         </v-toolbar-title>
       </v-toolbar>
       <v-flex class="pl-4 pr-4 pt-4 pb-4 text-xs-left">
@@ -12,9 +12,9 @@
 	        </v-text-field>
 	        <v-text-field label="Description" v-model="description" :rules="descriptionRule" multi-line required>
 	        </v-text-field>
-	        <v-btn @click="create" :disabled="!valid" color="cyan" dark>Create</v-btn>
-	        <v-alert type="success" v-show="isSuccess">Forum created successfully!</v-alert>
-	        <v-alert type="error" v-show="isError">Some error occured while creating forum!</v-alert>
+	        <v-btn @click="update" :disabled="!valid" color="cyan" dark>Update</v-btn>
+	        <v-alert type="success" v-show="isSuccess">Forum updated successfully!</v-alert>
+	        <v-alert type="error" v-show="isError">Some error occured while Updating forum!</v-alert>
       	</v-form>
       </v-flex>
     </div>
@@ -41,24 +41,36 @@ export default {
     }
   },
   methods: {
-  	create() {
+  	update() {
   		var vm = this
   		if(this.$refs.form.validate()) {
   			var data = {
+          id: this.$route.params.id,
   				title: this.title,
   				description: this.description
   			}
-  			ForumServices.create(data, function(err, response) {
+  			ForumServices.update(data, function(err, response) {
   				if(err) {
   					vm.isError = true
   					vm.$refs.form.reset()
   				} else {
   					vm.isSuccess = true
-  					vm.$refs.form.reset()
   				}
   			})
   		}
   	}
+  },
+  created() {
+    var forumId = this.$route.params.id
+    var vm = this
+    ForumServices.get(forumId, function(err, response) {
+      if(err) {
+        console.log(err)
+      } else {
+        vm.title = response.data.title
+        vm.description = response.data.description
+      }
+    })
   }
 }
 </script>

@@ -54,12 +54,50 @@ export default {
 			callback(err)
 		})
 	},
-	getMe(callback) {
+	getMyForums(callback) {
 		axios({
 			method: 'get',
 			url: 'http://localhost:8081/me/forums',
 			headers: {
 				'Authorization': 'Bearer ' + app.$store.state.token
+			}
+		})
+		.then(function(response) {
+			callback(null, response)
+		})
+		.catch(function(err) {
+			callback(err)
+		})
+	},
+	update(data, callback) {
+		axios({
+			method: 'post',
+			url: 'http://localhost:8081/forums/update',
+			headers: {
+				'Authorization': 'Bearer ' + app.$store.state.token
+			},
+			data: {
+				id: data.id,
+				title: data.title,
+				description: data.description
+			}
+		})
+		.then(function(response) {
+			callback(null, response)
+		})
+		.catch(function(err) {
+			callback(err)
+		})
+	},
+	delete(id, callback) {
+		axios({
+			method: 'delete',
+			url: 'http://localhost:8081/forums/delete',
+			headers: {
+				'Authorization': 'Bearer ' + app.$store.state.token
+			},
+			data: {
+				id: id
 			}
 		})
 		.then(function(response) {

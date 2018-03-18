@@ -55,7 +55,7 @@ export default {
 				else {
 					vm.$store.commit('setToken', res.data.token)
 					vm.$store.commit('logUser')
-					vm.$router.push('/')
+					vm.$router.push('/profile')
 				}
 			})	
 		}

@@ -30,16 +30,21 @@ const User = mongoose.model('users', UserSchema);
 
 UserSchema.pre('save', function(next) {
 	var user = this;
-	bcrypt.hash(user.password, 10, function(err, hash) {
-		if(err) {
-			return next(err);
-		}
-		else {
-			user.password = hash;
-			console.log(this.password);
-			next();
-		}
-	});
+	if(this.isNew) {
+		bcrypt.hash(user.password, 10, function(err, hash) {
+			if(err) {
+				return next(err);
+			}
+			else {
+				user.password = hash;
+				console.log(this.password);
+				next();
+			}
+		});
+	}
+	else {
+		next();
+	}
 });
 
 UserSchema.pre('update', function(next) {

@@ -1,10 +1,11 @@
 const User = require('../models/user');
 const Forum = require('../models/forum');
+const _ = require('lodash');
 
 const ForumController = {
 	getAll: async (req, res, next) => {
 		try {
-			var forums = await Forum.find({}).populate('user');
+			var forums = await Forum.find({}).populate('user').sort({updated_at: -1});
 			res.send(forums);
 		}
 		catch(err) {
@@ -65,7 +66,7 @@ const ForumController = {
 			next([{msg: 'Can not delete forum!'}]);
 		}
 	},
-	getMe: async (req, res, next) => {
+	getMyForums: async (req, res, next) => {
 		try {
 			var user = await User.findOne({_id: req.user.id}).populate('forums');
 			res.send(user.forums);

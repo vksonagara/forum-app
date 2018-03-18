@@ -18,8 +18,7 @@
             <span><strong>Author</strong>: {{ forum.user.email }}, <strong>Created At</strong>: {{ forum.updated_at }}</span>
           </v-card-title>
           <v-divider></v-divider>
-          <v-card-text class="text-xs-left">
-            {{ forum.description }}
+          <v-card-text class="text-xs-left" v-html="forum.description">
           </v-card-text>
           <v-card-actions>
             <v-btn flat color="cyan" @click="navigateToId(forum._id)">Explore</v-btn>
@@ -52,10 +51,10 @@ export default {
   },
   methods: {
     navigateToId (id) {
-      this.$router.push('forum/' + id)
+      this.$router.push('/forum/' + id)
     },
     navigateTo (path) {
-      this.$router.push('forums/create')
+      this.$router.push('/forums/create')
     }
   },
   computed: {

@@ -8,8 +8,7 @@
         <v-spacer></v-spacer>
         <span><strong>Author: </strong>{{ forum.user.email }}, <strong>Created At: </strong>{{ forum.updated_at }}</span>
       </v-toolbar>
-      <v-flex class="pl-4 pr-4 pt-4 pb-4 text-xs-left">
-        {{ forum.description }}
+      <v-flex class="pl-4 pr-4 pt-4 pb-4 text-xs-left" v-html="forum.description">
       </v-flex>
     </div>
   </v-flex>

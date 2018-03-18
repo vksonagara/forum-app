@@ -16,38 +16,7 @@ const router =  new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: Home,
-			children: [
-				{
-					path: '/forum/:id',
-					name: 'Forum',
-					component: Forum
-				},
-				{
-					path: '/forums/create',
-					name: 'createForum',
-					component: createForum,
-					beforeEnter: (to, from, next) => {
-						if(!app.$store.state.isLoggedIn) {
-							next('/login')
-						} else {
-							next()
-						}
-					}
-				},
-				{
-					path: '/forums/update/:id',
-					name: 'updateForum',
-					component: updateForum,
-					beforeEnter: (to, from, next) => {
-						if(!app.$store.state.isLoggedIn) {
-							next('/login')
-						} else {
-							next()
-						}
-					}
-				}
-			]
+			component: Home
 		},
 		{
 			path: '/register',
@@ -63,6 +32,35 @@ const router =  new Router({
 			path: '/profile',
 			name: 'Profile',
 			component: Profile,
+			beforeEnter: (to, from, next) => {
+				if(!app.$store.state.isLoggedIn) {
+					next('/login')
+				} else {
+					next()
+				}
+			}
+		},
+		{
+			path: '/forum/:id',
+			name: 'Forum',
+			component: Forum
+		},
+		{
+			path: '/forums/create',
+			name: 'createForum',
+			component: createForum,
+			beforeEnter: (to, from, next) => {
+				if(!app.$store.state.isLoggedIn) {
+					next('/login')
+				} else {
+					next()
+				}
+			}
+		},
+		{
+			path: '/forums/update/:id',
+			name: 'updateForum',
+			component: updateForum,
 			beforeEnter: (to, from, next) => {
 				if(!app.$store.state.isLoggedIn) {
 					next('/login')
