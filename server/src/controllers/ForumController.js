@@ -5,7 +5,7 @@ const _ = require('lodash');
 const ForumController = {
 	getAll: async (req, res, next) => {
 		try {
-			var forums = await Forum.find({}).populate('user').sort({updated_at: -1});
+			var forums = await Forum.find({}).populate({path: 'user', select: 'email'}).sort({updated_at: -1});
 			res.send(forums);
 		}
 		catch(err) {
@@ -34,7 +34,7 @@ const ForumController = {
 	get: async (req, res, next) => {
 		var id = req.params.id;
 		try {
-			var forum = await Forum.findOne({_id: id}).populate('user');
+			var forum = await Forum.findOne({_id: id}).populate({path: 'user', select: 'email'});
 			res.send(forum);
 		}
 		catch(err) {

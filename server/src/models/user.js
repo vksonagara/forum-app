@@ -3,17 +3,6 @@ const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
-const ForumSchema = new Schema({
-	title: String,
-	description: String,
-	created_at: Date,
-	updated_at: Date,
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'users'
-	}
-});
-
 const UserSchema = new Schema({
 	email: {
 		type: String,
@@ -23,6 +12,10 @@ const UserSchema = new Schema({
 	forums: [{
 		type: Schema.Types.ObjectId,
 		ref: 'forums'
+	}],
+	comments: [{
+		type: Schema.Types.ObjectId,
+		ref: 'comments'
 	}]
 });
 
@@ -45,10 +38,6 @@ UserSchema.pre('save', function(next) {
 	else {
 		next();
 	}
-});
-
-UserSchema.pre('update', function(next) {
-	next();
 });
 
 module.exports = User;

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
@@ -11,19 +10,15 @@ const ForumSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: 'users'
-	}
-});
-
-const UserSchema = new Schema({
-	email: {
-		type: String,
-		unique: true
 	},
-	password: String,
-	forums: [{
+	comments: [{
 		type: Schema.Types.ObjectId,
-		ref: 'forums'
-	}]
+		ref: 'comments'
+	}],
+	total_comments: {
+		type: Number,
+		default: 0
+	}
 });
 
 const Forum = mongoose.model('forums', ForumSchema);

@@ -10,12 +10,15 @@
       </v-toolbar>
       <v-flex class="pl-4 pr-4 pt-4 pb-4 text-xs-left" v-html="forum.description">
       </v-flex>
+      <v-divider></v-divider>
+      <Comments></Comments>
     </div>
   </v-flex>
 </template>
 
 <script>
 import ForumServices from '@/services/ForumServices'
+import Comments from '@/components/Comments'
 
 export default {
   name: 'Forum',
@@ -33,6 +36,9 @@ export default {
         vm.forum = res.data
       }
     })
+  },
+  components: {
+    Comments
   }
 }
 </script>

@@ -22,6 +22,10 @@
           </v-card-text>
           <v-card-actions>
             <v-btn flat color="cyan" @click="navigateToId(forum._id)">Explore</v-btn>
+            <v-badge right color="cyan">
+              <span slot="badge">{{ forum.total_comments }}</span>
+              <v-icon large color="grey lighten-1">comment</v-icon>
+            </v-badge>
           </v-card-actions>
         </v-card>
       </v-flex>
