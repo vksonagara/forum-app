@@ -4,6 +4,7 @@ const AuthController = require('./controllers/AuthController');
 const passport = require('passport');
 const ForumController = require('./controllers/ForumController');
 const CommentController = require('./controllers/CommentController');
+const BookmarksController = require('./controllers/BookmarksController');
 
 router.get('/', (req, res) => {
 	res.send({
@@ -28,5 +29,11 @@ router.get('/email', passport.authenticate('jwt', {session: false}), ForumContro
 //Comment Routes
 router.post('/comments/create', passport.authenticate('jwt', {session: false}), CommentController.create);
 router.get('/comments/:forumId', CommentController.getForumComments);
+
+//Bookmarks Routes
+router.post('/bookmarks/create', passport.authenticate('jwt', {session: false}), BookmarksController.create);
+router.get('/bookmarks', passport.authenticate('jwt', {session: false}), BookmarksController.get);
+router.post('/bookmarks/update', passport.authenticate('jwt', {session: false}), BookmarksController.update);
+router.delete('/bookmarks/delete', passport.authenticate('jwt', {session: false}), BookmarksController.delete);
 
 module.exports = router;

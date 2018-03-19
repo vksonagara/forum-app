@@ -3,6 +3,16 @@ const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
+const BookmarksSchema = new Schema({
+	title: String,
+	forum: {
+		type: Schema.Types.ObjectId,
+		ref: 'forums'
+	},
+	created_at: Date,
+	updated_at: Date
+});
+
 const UserSchema = new Schema({
 	email: {
 		type: String,
@@ -16,7 +26,8 @@ const UserSchema = new Schema({
 	comments: [{
 		type: Schema.Types.ObjectId,
 		ref: 'comments'
-	}]
+	}],
+	bookmarks: [BookmarksSchema]
 });
 
 const User = mongoose.model('users', UserSchema);
