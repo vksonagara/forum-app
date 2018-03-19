@@ -41,12 +41,10 @@ const BookmarksController = {
 	},
 	delete: async (req, res, next) => {
 		try {
-			let user = await User.findOne({_id: req.user.id});
+			let userId = req.user.id;
 			let bookmarkId = req.body.bookmarkId;
-			let bookmarks = user.bookmarks;
-			_.remove(bookmarks, b => b._id == bookmarkId);
-			User.update({_id: user._id}, {bookmarks: bookmarks});
-			res.send(bookmarks);
+			let user = await User.findByIdAndUpdate({_id: userId}, {$pull: {bookmarks: {_id: bookmarkId}}}, {safe: true});
+			res.send('Bookmark deleted!');
 		} catch(err) {
 			next([{msg: 'Error occured'}]);
 		}
