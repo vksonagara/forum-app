@@ -15,4 +15,4 @@ A public forum app with user registration, posts, bookmarks, and comments using 
 -JWT
 -MongoDB
 
-Checkout project at : https://forum-app-vks.herokuapp.com/
+Checkout project at : https://forum-app-frontend.herokuapp.com/
