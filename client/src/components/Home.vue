@@ -26,10 +26,6 @@
               <span slot="badge">{{ forum.total_comments }}</span>
               <v-icon large color="grey lighten-1">comment</v-icon>
             </v-badge>
-            <v-spacer></v-spacer>
-            <v-btn color="cyan" flat icon @click="bookmark(forum.title, forum._id)">
-              <v-icon>{{ bookmarkType }}</v-icon>
-            </v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -39,14 +35,12 @@
 
 <script>
 import ForumServices from '@/services/ForumServices'
-import BookmarksServices from '@/services/BookmarksServices'
 
 export default {
   name: 'Home',
   data () {
     return {
-      forums: [],
-      bookmarkType: 'bookmark_border'
+      forums: []
     }
   },
   created () {
@@ -65,16 +59,6 @@ export default {
     },
     navigateTo (path) {
       this.$router.push('/forums/create')
-    },
-    bookmark (title, forumId) {
-      let vm = this
-      BookmarksServices.create(title, forumId, function(err, res) {
-        if(err) {
-          console.log(err)
-        } else {
-          vm.bookmarkType = 'bookmark'
-        }
-      })
     }
   },
   computed: {

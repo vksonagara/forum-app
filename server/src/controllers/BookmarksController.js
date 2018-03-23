@@ -44,7 +44,9 @@ const BookmarksController = {
 			let userId = req.user.id;
 			let bookmarkId = req.body.bookmarkId;
 			let user = await User.findByIdAndUpdate({_id: userId}, {$pull: {bookmarks: {_id: bookmarkId}}}, {safe: true});
-			res.send('Bookmark deleted!');
+			user = await User.findOne({_id: req.user.id});
+			let bookmarks = user.bookmarks;
+			res.send(bookmarks);
 		} catch(err) {
 			next([{msg: 'Error occured'}]);
 		}

@@ -7,6 +7,9 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <span><strong>Author: </strong>{{ forum.user.email }}, <strong>Created At: </strong>{{ forum.updated_at }}</span>
+        <v-btn color="white" flat icon @click="bookmark(forum.title, forum._id)" v-if="isLoggedIn">
+          <v-icon>{{ bookmarkType }}</v-icon>
+        </v-btn>
       </v-toolbar>
       <v-flex class="pl-4 pr-4 pt-4 pb-4 text-xs-left" v-html="forum.description">
       </v-flex>
@@ -19,12 +22,14 @@
 <script>
 import ForumServices from '@/services/ForumServices'
 import Comments from '@/components/Comments'
+import BookmarksServices from '@/services/BookmarksServices'
 
 export default {
   name: 'Forum',
   data () {
     return {
-      forum: {}
+      forum: {},
+      bookmarkType: 'bookmark_border'
     }
   },
   created () {
@@ -39,6 +44,23 @@ export default {
   },
   components: {
     Comments
+  },
+  methods: {
+    bookmark (title, forumId) {
+      let vm = this
+      BookmarksServices.create(title, forumId, function(err, res) {
+        if(err) {
+          console.log(err)
+        } else {
+          vm.bookmarkType = 'bookmark'
+        }
+      })
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn
+    }
   }
 }
 </script>

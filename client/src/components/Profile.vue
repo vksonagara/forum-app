@@ -1,57 +1,65 @@
 <template>
-  <v-flex xs8 offset-xs2>
-    <div class="white elevation-2">
-      <v-toolbar flat dark color="cyan">
-        <v-toolbar-title>
-          Forums Created by You
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-chip color="cyan accent-3" text-color="white">
-          <v-avatar>
-            <v-icon>account_circle</v-icon>
-          </v-avatar>
-          {{ email }}
-        </v-chip>
-        <v-btn dark small fab color="cyan accent-3" @click="navigateTo('/forums/create')" v-if="isLoggedIn">
-          <v-icon>add</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-flex class="pl-4 pr-4 pt-4 pb-4">
-        <v-card v-for="forum in forums" :key="forum._id" class="mt-4 mb-4">
-          <v-card-title primary-title>
-            <h3 class="headline mb-0">{{ forum.title }}</h3>
-            <v-spacer></v-spacer>
-            <span><strong>Created At</strong>: {{ forum.updated_at }}</span>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="text-xs-left" v-html="forum.description">
-          </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="cyan" @click="navigateToId(forum._id)">Explore</v-btn>
-            <v-btn flat color="cyan" @click="navigateToUpdateId(forum._id)">Edit</v-btn>
-            <v-btn flat color="cyan" @click="dialog = true; id = forum._id">Delete</v-btn>
-          </v-card-actions>
-          <v-dialog v-model="dialog" max-width="290">
-            <v-card>
-              <v-card-title class="headline">Are you sure to delete?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Cancel</v-btn>
-                <v-btn color="green darken-1" flat="flat" @click.native="deletePost">Yes</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-card>
-      </v-flex>
-    </div>
-  </v-flex>
+  <v-layout row>
+    <Bookmarks></Bookmarks>
+    <v-flex xs8 class="ml-4">
+      <div class="white elevation-2">
+        <v-toolbar flat dark color="cyan">
+          <v-toolbar-title>
+            Forums Created by You
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-chip color="cyan accent-3" text-color="white">
+            <v-avatar>
+              <v-icon>account_circle</v-icon>
+            </v-avatar>
+            {{ email }}
+          </v-chip>
+          <v-btn dark small fab color="cyan accent-3" @click="navigateTo('/forums/create')" v-if="isLoggedIn">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-flex class="pl-4 pr-4 pt-4 pb-4">
+          <span v-if="forums.length == 0">No forums created yet!</span>
+          <v-card v-for="forum in forums" :key="forum._id" class="mt-4 mb-4">
+            <v-card-title primary-title>
+              <h3 class="headline mb-0">{{ forum.title }}</h3>
+              <v-spacer></v-spacer>
+              <span><strong>Created At</strong>: {{ forum.updated_at }}</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="text-xs-left" v-html="forum.description">
+            </v-card-text>
+            <v-card-actions>
+              <v-btn flat color="cyan" @click="navigateToId(forum._id)">Explore</v-btn>
+              <v-btn flat color="cyan" @click="navigateToUpdateId(forum._id)">Edit</v-btn>
+              <v-btn flat color="cyan" @click="dialog = true; id = forum._id">Delete</v-btn>
+            </v-card-actions>
+            <v-dialog v-model="dialog" max-width="290">
+              <v-card>
+                <v-card-title class="headline">Are you sure to delete?</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Cancel</v-btn>
+                  <v-btn color="green darken-1" flat="flat" @click.native="deletePost">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-card>
+        </v-flex>
+      </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
 import ForumServices from '@/services/ForumServices'
+import Bookmarks from '@/components/Bookmarks'
 
 export default {
   name: 'Forum',
+  components: {
+    Bookmarks
+  },
   data () {
     return {
       email: '',
@@ -91,10 +99,7 @@ export default {
         if(err) {
           console.log(err)
         } else {
-          console.log(vm.forums)
-          vm.forums = vm.forums.filter(function(forum) {
-            return forum._id !== vm.id
-          })
+          vm.forums = response.data
         }
       })
     },

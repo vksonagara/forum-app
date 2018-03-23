@@ -60,7 +60,8 @@ const ForumController = {
 			var id = req.body.id;
 			var forum = await Forum.findOne({_id: id});
 			forum.remove();
-			res.send(forum);
+			var user = await User.findOne({_id: req.user.id}).populate('forums');
+			res.send(user.forums);
 		}
 		catch(err) {
 			next([{msg: 'Can not delete forum!'}]);
